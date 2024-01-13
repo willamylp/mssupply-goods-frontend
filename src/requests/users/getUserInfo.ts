@@ -1,4 +1,4 @@
-import apiConfig from './apiConfig'
+import apiConfig from '../apiConfig'
 
 export const getUser = async (token: string, id: string) => {
   await new Promise((resolve) => setTimeout(resolve, 2000))

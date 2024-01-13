@@ -1,4 +1,4 @@
-import { ChevronDown, LogOut, UserCog } from 'lucide-react'
+import { ChevronDown, LogOut, UserCheck, UserCog } from 'lucide-react'
 
 import { Button } from './ui/button'
 import {
@@ -18,6 +18,7 @@ export function AccountMenu() {
           variant="outline"
           className="flex select-none items-center gap-2"
         >
+          <UserCheck className="h-4 w-4" />
           {localStorage.getItem('username')}
           <ChevronDown className="h-4 w-4" />
         </Button>

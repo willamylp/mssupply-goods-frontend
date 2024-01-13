@@ -33,7 +33,7 @@ export function SignIn() {
         localStorage.setItem('username', response.user.username)
         localStorage.setItem('userEmail', response.user.email)
         localStorage.setItem('userName', response.user.name)
-        localStorage.setItem('userIsAdmin', response.user.is_admim)
+        localStorage.setItem('userIsAdmin', response.user.is_admin)
         toast.success(response.msg)
         setTimeout(() => (window.location.href = '/'), 1000)
       } else {
