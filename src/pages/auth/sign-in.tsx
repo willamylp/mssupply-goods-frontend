@@ -35,9 +35,10 @@ export function SignIn() {
 
       if (response.ok) {
         const accessToken = await response.json()
-        localStorage.setItem('access_token', accessToken)
+        localStorage.setItem('access_token', accessToken.access_token)
+        localStorage.setItem('user_id', accessToken.user_id)
         toast.success(accessToken.msg)
-        redirect('/')
+        setTimeout(() => (window.location.href = '/'), 800)
       } else {
         toast.error((await response.json()).msg)
       }
@@ -57,7 +58,7 @@ export function SignIn() {
             </h1>
             <hr />
             <div
-              className="my-2 flex items-center rounded-lg bg-yellow-50 p-4 text-sm text-yellow-800 dark:bg-gray-800 dark:text-yellow-300"
+              className="my-2 flex items-center rounded-lg bg-yellow-50 p-4 text-sm text-yellow-800 shadow-sm dark:bg-gray-800 dark:text-yellow-300"
               role="alert"
             >
               <svg
@@ -67,7 +68,7 @@ export function SignIn() {
                 fill="currentColor"
                 viewBox="0 0 20 20"
               >
-                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
               </svg>
               <span className="sr-only">Info</span>
               <div>
