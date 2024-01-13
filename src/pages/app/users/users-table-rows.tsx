@@ -1,68 +1,82 @@
-import { ArrowRight, Search, X } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import {
+  ArrowRight,
+  ChevronDown,
+  PencilLine,
+  Trash2,
+  User,
+  UserCheck,
+  UserRoundCog,
+  UserX,
+} from 'lucide-react'
 
+import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Dialog, DialogTrigger } from '@/components/ui/dialog'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 import { TableCell, TableRow } from '@/components/ui/table'
-import { OrderDetails } from '@/pages/app/orders/order-details'
-import { getAllUsers } from '@/requests/users/getAllUsers'
 
-export function UsersTableRows() {
-  const [users, setUsers] = useState([])
+import { UserProps } from './users'
 
-  useEffect(() => {
-    // eslint-disable-next-line no-async-promise-executor
-    const allUsers = async () => {
-      getAllUsers(sessionStorage.getItem('accessToken') as string)
-    }
-    allUsers()
-      .then(async () => {
-        setUsers(
-          await getAllUsers(sessionStorage.getItem('accessToken') as string),
-        )
-      })
-      .catch((error) => {
-        console.error(error)
-      })
-  }, [])
+interface UsersTableRowsProps {
+  user: UserProps
+}
 
-
+export function UsersTableRows({ user }: UsersTableRowsProps) {
   return (
     <TableRow>
+      <TableCell className="font-medium">{user.id}</TableCell>
+      <TableCell className="font-medium">{user.username}</TableCell>
+      <TableCell className="font-medium">{user.name}</TableCell>
+      <TableCell className="font-medium">{user.email}</TableCell>
+      <TableCell className="font-medium ">
+        <Badge className={user.is_admin ? 'bg-blue-900' : 'bg-gray-700'}>
+          {user.is_admin ? (
+            <UserRoundCog className="mr-2" />
+          ) : (
+            <User className="mr-1" />
+          )}{' '}
+          {user.is_admin ? 'Admin' : 'Comum'}
+        </Badge>
+      </TableCell>
+      <TableCell className="font-medium ">
+        <Badge className={user.is_active ? 'bg-teal-700' : 'bg-rose-700'}>
+          {user.is_active ? (
+            <UserCheck className="mr-2" />
+          ) : (
+            <UserX className="mr-1" />
+          )}{' '}
+          {user.is_admin ? 'Ativo' : 'Inativo'}
+        </Badge>
+      </TableCell>
       <TableCell>
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button variant="outline" size="xs">
-              <Search className="h-3 w-3" />
-              <span className="sr-only">Detalhes do pedido</span>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="outline"
+              className="flex select-none items-center gap-2"
+            >
+              Opções
+              <ChevronDown className="h-4 w-4" />
             </Button>
-          </DialogTrigger>
-          <OrderDetails />
-        </Dialog>
-      </TableCell>
-      <TableCell className="font-mono text-xs font-medium">
-        14981209481029521n41203
-      </TableCell>
-      <TableCell className="text-muted-foreground">Há 15 minutos</TableCell>
-      <TableCell>
-        <div className="flex items-center gap-2">
-          <span className="h-2 w-2 rounded-full bg-slate-400" />
-          <span className="font-medium text-muted-foreground">Pendente</span>
-        </div>
-      </TableCell>
-      <TableCell className="font-medium">Marcelo Augusto</TableCell>
-      <TableCell className="font-medium">R$ 149,90</TableCell>
-      <TableCell>
-        <Button variant="outline" size="xs">
-          <ArrowRight className="mr-2 h-3 w-3" />
-          Aprovar
-        </Button>
-      </TableCell>
-      <TableCell>
-        <Button variant="ghost" size="xs">
-          <X className="mr-2 h-3 w-3" />
-          Cancelar
-        </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem>
+              <PencilLine className="mr-2 h-4 w-4" />
+              <span className="font-semibold">Editar</span>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem className="text-rose-600 dark:text-rose-400">
+              <Trash2 className="mr-2 h-4 w-4" />
+              <span className="font-semibold">Deletar</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </TableCell>
     </TableRow>
   )

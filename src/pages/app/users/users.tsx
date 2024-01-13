@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 
 import { Pagination } from '@/components/pagination'
@@ -8,10 +9,30 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { OrderTableFilters } from '@/pages/app/orders/order-table-filters'
 import { UsersTableRows } from '@/pages/app/users/users-table-rows'
+import { getAllUsers } from '@/requests/users/getAllUsers'
+
+export interface UserProps {
+  id: number
+  name: string
+  email: string
+  username: string
+  is_admin: boolean
+  is_active: boolean
+}
 
 export function Users() {
+  const [users, setUsers] = useState<UserProps[]>([])
+
+  useEffect(() => {
+    async function loadUsers() {
+      setUsers(
+        await getAllUsers(sessionStorage.getItem('accessToken') as string),
+      )
+    }
+    loadUsers()
+  }, [])
+
   return (
     <>
       <Helmet title="Usuários" />
@@ -19,27 +40,27 @@ export function Users() {
         <h1 className="text-3xl font-bold tracking-tight">Usuários</h1>
 
         <div className="space-y-2.5">
-          <OrderTableFilters />
-
           <div className="rounded-md border">
             <Table>
               <TableHeader>
                 <TableRow>
                   <TableHead>ID</TableHead>
+                  <TableHead>Usuário</TableHead>
                   <TableHead>Nome</TableHead>
                   <TableHead>E-mail</TableHead>
-                  <TableHead>Usuário</TableHead>
-                  <TableHead>Permissões</TableHead>
+                  <TableHead>Tipo de Usuário</TableHead>
+                  <TableHead>Usuário Ativo?</TableHead>
                   <TableHead>Ações</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                <UsersTableRows />
+                {users.map((user) => (
+                  <UsersTableRows user={user} key={user.id} />
+                ))}
               </TableBody>
             </Table>
           </div>
-
-          <Pagination pageIndex={0} totalCount={105} perPage={10} />
+          <Pagination pageIndex={0} totalCount={users.length} perPage={10} />
         </div>
       </div>
     </>

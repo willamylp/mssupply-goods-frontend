@@ -1,10 +1,4 @@
-import {
-  Boxes,
-  Home,
-  PackageSearch,
-  Users,
-  UtensilsCrossed,
-} from 'lucide-react'
+import { Boxes, Home, PackageSearch, Users } from 'lucide-react'
 
 import { AccountMenu } from '@/components/account-menu'
 import { NavLink } from '@/components/nav-link'

@@ -1,13 +1,13 @@
 import apiConfig from '../apiConfig'
 
-export async function getAllUsers(token: string) {
-  const response = await fetch(`${apiConfig.apiUrl}users`, {
-    method: 'GET',
+export async function deleteUser(id: string, token: string) {
+  const response = await fetch(`${apiConfig.apiUrl}users/${id}`, {
+    method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
   })
   const data = await response.json()
-  return data.users
+  return data
 }
