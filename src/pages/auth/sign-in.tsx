@@ -28,12 +28,12 @@ export function SignIn() {
       const response = await login(data.username, data.password)
 
       if (response.access_token) {
-        localStorage.setItem('accessToken', response.access_token)
-        localStorage.setItem('userId', response.user.id)
-        localStorage.setItem('username', response.user.username)
-        localStorage.setItem('userEmail', response.user.email)
-        localStorage.setItem('userName', response.user.name)
-        localStorage.setItem('userIsAdmin', response.user.is_admin)
+        sessionStorage.setItem('username', response.user.username)
+        sessionStorage.setItem('userEmail', response.user.email)
+        sessionStorage.setItem('userName', response.user.name)
+        sessionStorage.setItem('userId', response.user.id)
+        sessionStorage.setItem('userIsAdmin', response.user.is_admin)
+        sessionStorage.setItem('accessToken', response.access_token)
         toast.success(response.msg)
         setTimeout(() => (window.location.href = '/'), 1000)
       } else {
@@ -89,6 +89,7 @@ export function SignIn() {
                     type="text"
                     className="shadow-md"
                     autoComplete="username"
+                    required={true}
                     {...register('username')}
                   />
                 </div>
@@ -99,6 +100,7 @@ export function SignIn() {
                     id="password"
                     type="password"
                     className="shadow-md"
+                    required={true}
                     {...register('password')}
                   />
                 </div>

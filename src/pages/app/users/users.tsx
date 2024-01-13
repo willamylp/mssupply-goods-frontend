@@ -9,7 +9,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { OrderTableFilters } from '@/pages/app/orders/order-table-filters'
-import { OrderTableRow } from '@/pages/app/orders/order-table-row'
+import { UsersTableRows } from '@/pages/app/users/users-table-rows'
 
 export function Users() {
   return (
@@ -25,20 +25,16 @@ export function Users() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-[64px]"></TableHead>
-                  <TableHead className="w-[140px]">Identificador</TableHead>
-                  <TableHead className="w-[180px]">Realizado há</TableHead>
-                  <TableHead className="w-[140px]">Status</TableHead>
-                  <TableHead>Cliente</TableHead>
-                  <TableHead className="w-[140px]">Total do pedido</TableHead>
-                  <TableHead className="w-[164px]"></TableHead>
-                  <TableHead className="w-[132px]"></TableHead>
+                  <TableHead>ID</TableHead>
+                  <TableHead>Nome</TableHead>
+                  <TableHead>E-mail</TableHead>
+                  <TableHead>Usuário</TableHead>
+                  <TableHead>Permissões</TableHead>
+                  <TableHead>Ações</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {Array.from({ length: 10 }).map((_, i) => {
-                  return <OrderTableRow key={i} />
-                })}
+                <UsersTableRows />
               </TableBody>
             </Table>
           </div>

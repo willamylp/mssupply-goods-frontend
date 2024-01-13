@@ -1,4 +1,10 @@
-import { Boxes, Home, PackageSearch, Users, UtensilsCrossed } from 'lucide-react'
+import {
+  Boxes,
+  Home,
+  PackageSearch,
+  Users,
+  UtensilsCrossed,
+} from 'lucide-react'
 
 import { AccountMenu } from '@/components/account-menu'
 import { NavLink } from '@/components/nav-link'
@@ -6,8 +12,8 @@ import { ThemeToggle } from '@/components/theme/theme-toggle'
 import { Separator } from '@/components/ui/separator'
 
 export function Header() {
-  const userIsAdmin = localStorage.getItem('userIsAdmin')
-  console.log(typeof userIsAdmin)
+  const userIsAdmin = sessionStorage.getItem('userIsAdmin')
+
   const buttonUsers =
     userIsAdmin === '1' ? (
       <NavLink to="/usuarios">

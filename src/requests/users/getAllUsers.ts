@@ -1,13 +1,13 @@
 import apiConfig from '../apiConfig'
 
-export const createUser = async (user: User) => {
+export async function getAllUsers(token: string) {
   const response = await fetch(`${apiConfig.apiUrl}users`, {
-    method: 'POST',
+    method: 'GET',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify(user),
   })
-
-  return response.json()
+  const data = await response.json()
+  return data
 }

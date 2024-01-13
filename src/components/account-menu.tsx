@@ -19,15 +19,15 @@ export function AccountMenu() {
           className="flex select-none items-center gap-2"
         >
           <UserCheck className="h-4 w-4" />
-          {localStorage.getItem('username')}
+          {sessionStorage.getItem('username')}
           <ChevronDown className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end">
         <DropdownMenuLabel className="flex flex-col">
-          <span>{localStorage.getItem('userName')}</span>
+          <span>{sessionStorage.getItem('userName')}</span>
           <span className="text-xs font-normal text-muted-foreground">
-            {localStorage.getItem('userEmail')}
+            {sessionStorage.getItem('userEmail')}
           </span>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
