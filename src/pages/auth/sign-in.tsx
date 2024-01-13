@@ -1,3 +1,4 @@
+import { Loader2 } from 'lucide-react'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -110,7 +111,11 @@ export function SignIn() {
                   type="submit"
                   disabled={isSubmitting}
                 >
-                  {isSubmitting ? 'Acessando ...' : 'Acessar Painel'}
+                  {isSubmitting ? (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  ) : (
+                    'Acessar Painel'
+                  )}
                 </Button>
               </form>
             </div>
