@@ -18,15 +18,15 @@ export function AccountMenu() {
           variant="outline"
           className="flex select-none items-center gap-2"
         >
-          Username
+          {localStorage.getItem('username')}
           <ChevronDown className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end">
         <DropdownMenuLabel className="flex flex-col">
-          <span>Nome do Usuário</span>
+          <span>{localStorage.getItem('userName')}</span>
           <span className="text-xs font-normal text-muted-foreground">
-            mail@exemplo.com
+            {localStorage.getItem('userEmail')}
           </span>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />

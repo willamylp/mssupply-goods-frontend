@@ -1,5 +1,5 @@
 const domain = 'localhost'
-const port = 82
+const port = 81
 const apiVersion = '/api/v1/'
 const apiConfig = {
   apiUrl: `http://${domain}:${port}${apiVersion}`,

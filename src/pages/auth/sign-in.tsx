@@ -4,19 +4,10 @@ import { toast } from 'sonner'
 import { z } from 'zod'
 
 import { Button } from '@/components/ui/button'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { login } from '@/requests/login'
-
-
 
 const signInForm = z.object({
   username: z.string(),
@@ -37,8 +28,12 @@ export function SignIn() {
       const response = await login(data.username, data.password)
 
       if (response.access_token) {
-        localStorage.setItem('access_token', response.access_token)
-        localStorage.setItem('user_id', response.user_id)
+        localStorage.setItem('accessToken', response.access_token)
+        localStorage.setItem('userId', response.user.id)
+        localStorage.setItem('username', response.user.username)
+        localStorage.setItem('userEmail', response.user.email)
+        localStorage.setItem('userName', response.user.name)
+        localStorage.setItem('userIsAdmin', response.user.is_admim)
         toast.success(response.msg)
         setTimeout(() => (window.location.href = '/'), 1000)
       } else {
