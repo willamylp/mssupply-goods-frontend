@@ -6,6 +6,7 @@ import {
   UserRoundCog,
   UserX,
 } from 'lucide-react'
+import { toast } from 'sonner'
 
 import {
   AlertDialog,
@@ -21,6 +22,7 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { TableCell, TableRow } from '@/components/ui/table'
+import { deleteUser } from '@/requests/users/deleteUser'
 
 import { UserProps } from './users'
 
@@ -29,6 +31,20 @@ interface UsersTableRowsProps {
 }
 
 export function UsersTableRows({ user }: UsersTableRowsProps) {
+  async function handleUserDelete(token: string, id: string) {
+    try {
+      const response = await deleteUser(token, id)
+      if (response.status === 201) {
+        toast.success(response.msg)
+        setTimeout(() => window.location.reload(), 1000)
+      } else {
+        toast.error(response.msg)
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   return (
     <TableRow>
       <TableCell className="font-medium">{user.id}</TableCell>
@@ -86,7 +102,16 @@ export function UsersTableRows({ user }: UsersTableRowsProps) {
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>Cancelar</AlertDialogCancel>
-              <AlertDialogAction>Deletar</AlertDialogAction>
+              <AlertDialogAction
+                onClick={() => {
+                  return handleUserDelete(
+                    sessionStorage.getItem('accessToken') as string,
+                    user.id.toString(),
+                  )
+                }}
+              >
+                Deletar
+              </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>

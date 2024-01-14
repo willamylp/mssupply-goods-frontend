@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { Separator } from '@/components/ui/separator'
 import { login } from '@/requests/login'
 
 const signInForm = z.object({
@@ -82,7 +83,7 @@ export function SignIn() {
                 <hr />
               </div>
 
-              <form className="space-y-4" onSubmit={handleSubmit(handleSignIn)}>
+              <form className="space-y-5" onSubmit={handleSubmit(handleSignIn)}>
                 <div className="space-y-2">
                   <Label htmlFor="username">Nome de Usuário</Label>
                   <Input
@@ -95,7 +96,7 @@ export function SignIn() {
                   />
                 </div>
 
-                <div className="mt-3 space-y-2">
+                <div className="space-y-5">
                   <Label htmlFor="password">Senha</Label>
                   <Input
                     id="password"
@@ -105,9 +106,9 @@ export function SignIn() {
                     {...register('password')}
                   />
                 </div>
-
+                <Separator className="space-y-5" />
                 <Button
-                  className="mt-5 w-full"
+                  className="w-full space-y-5 bg-slate-950 text-white hover:bg-slate-900"
                   type="submit"
                   disabled={isSubmitting}
                 >
