@@ -1,7 +1,10 @@
+import { UserPlus } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 
 import { Pagination } from '@/components/pagination'
+import { Button } from '@/components/ui/button'
+import { Separator } from '@/components/ui/separator'
 import {
   Table,
   TableBody,
@@ -36,11 +39,17 @@ export function Users() {
   return (
     <>
       <Helmet title="Usuários" />
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-5">
         <h1 className="text-3xl font-bold tracking-tight">Usuários</h1>
-
         <div className="space-y-2.5">
           <div className="rounded-md border">
+            <a href="/usuarios/cadastro" className="justify-end">
+              <Button className="w-50 mx-3 my-3 bg-indigo-800 hover:bg-indigo-700">
+                <UserPlus className="mr-2" />
+                Cadastrar Usuário
+              </Button>
+            </a>
+            <Separator />
             <Table>
               <TableHeader>
                 <TableRow>

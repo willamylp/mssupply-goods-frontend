@@ -21,9 +21,11 @@ import {
 } from '@/components/ui/alert-dialog'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 import { TableCell, TableRow } from '@/components/ui/table'
 import { deleteUser } from '@/requests/users/deleteUser'
 
+import { DialogFormEditUser } from './form-edit-user'
 import { UserProps } from './users'
 
 interface UsersTableRowsProps {
@@ -34,9 +36,10 @@ export function UsersTableRows({ user }: UsersTableRowsProps) {
   async function handleUserDelete(token: string, id: string) {
     try {
       const response = await deleteUser(token, id)
+      console.log(response.status)
       if (response.status === 201) {
         toast.success(response.msg)
-        setTimeout(() => window.location.reload(), 1000)
+        setTimeout(() => window.location.reload(), 800)
       } else {
         toast.error(response.msg)
       }
@@ -115,13 +118,18 @@ export function UsersTableRows({ user }: UsersTableRowsProps) {
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
-        <Button
-          variant="outline"
-          className="w-50 bg-blue-600 text-white hover:bg-blue-500 hover:text-white"
-        >
-          <PencilLine className="mr-2 h-4 w-4" />
-          <span className="font-semibold">Editar</span>
-        </Button>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button
+              variant="outline"
+              className="w-50 border-none bg-blue-600 text-white hover:bg-blue-500 hover:text-white"
+            >
+              <PencilLine className="mr-2 h-4 w-4" />
+              <span className="font-semibold">Editar</span>
+            </Button>
+          </DialogTrigger>
+          <DialogFormEditUser user={user} key={user.id} />
+        </Dialog>
       </TableCell>
     </TableRow>
   )
