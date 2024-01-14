@@ -17,7 +17,7 @@ import { Button } from '@/components/ui/button'
 import { TableCell, TableRow } from '@/components/ui/table'
 import { deleteMerchandise } from '@/requests/goods/deleteMerchandise'
 
-// import { DialogFormEditMerchandise } from './form-edit-merchandise'
+import { DialogFormEditMerchandise } from './form-edit-merchandise'
 import { GoodsProps } from './goods'
 
 interface GoodsTableRowsProps {
@@ -90,7 +90,10 @@ export function GoodsTableRows({ merchandise }: GoodsTableRowsProps) {
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
-        {/* <DialogFormEditUser merchandise={merchandise} key={merchandise.id} /> */}
+        <DialogFormEditMerchandise
+          merchandise={merchandise}
+          key={merchandise.id}
+        />
       </TableCell>
     </TableRow>
   )
