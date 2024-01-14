@@ -10,7 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-// import { DialogFormCreateUser } from '@/pages/app/goods/form-create-goods'
+import { DialogFormCreateMerchandise } from '@/pages/app/goods/form-create-merchandise'
 import { GoodsTableRows } from '@/pages/app/goods/goods-table-rows'
 import { getAllGoods } from '@/requests/goods/getAllGoods'
 
@@ -44,7 +44,7 @@ export function Goods() {
         <h1 className="text-3xl font-bold tracking-tight">Mercadorias</h1>
         <div className="space-y-2.5">
           <div className="rounded-md border">
-            {/* <DialogFormCreateMerchandise /> */}
+            <DialogFormCreateMerchandise />
             <Separator />
             <Table>
               <TableHeader>

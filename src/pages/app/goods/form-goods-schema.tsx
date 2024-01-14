@@ -16,5 +16,4 @@ export const FormGoodsSchema = z.object({
   description: z.string().min(1, {
     message: 'Este campo é obrigatório.',
   }),
-  user_id: z.string(),
 })

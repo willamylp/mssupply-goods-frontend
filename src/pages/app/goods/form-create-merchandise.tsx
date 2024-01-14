@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { CheckCircle, PencilLine } from 'lucide-react'
+import { ArchiveRestore, CheckCircle } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import * as z from 'zod'
@@ -8,7 +8,6 @@ import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
-  DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
@@ -24,35 +23,18 @@ import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import { Textarea } from '@/components/ui/textarea'
 import { FormGoodsSchema } from '@/pages/app/goods/form-goods-schema'
-import { updateMerchandise } from '@/requests/goods/updateMerchandise'
+import { createMerchandise } from '@/requests/goods/createMerchandise'
 
-import { GoodsProps } from './goods'
+const formSchema = FormGoodsSchema
 
-interface GoodsFormEditProps {
-  merchandise: GoodsProps
-}
-
-const formSchema = FormGoodsSchema.extend({
-  user_id: z.string(),
-})
-
-export function DialogFormEditMerchandise({ merchandise }: GoodsFormEditProps) {
+export function DialogFormCreateMerchandise() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: merchandise.name,
-      register_number: merchandise.register_number,
-      manufacturer: merchandise.manufacturer,
-      type: merchandise.type,
-      description: merchandise.description,
-      user_id: sessionStorage.getItem('userId') as string,
-    },
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      const response = await updateMerchandise(
-        merchandise.id,
+      const response = await createMerchandise(
         values,
         sessionStorage.getItem('accessToken') as string,
       )
@@ -70,22 +52,14 @@ export function DialogFormEditMerchandise({ merchandise }: GoodsFormEditProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button
-          variant="outline"
-          className="border-none bg-blue-600 text-white hover:bg-blue-500 hover:text-white"
-        >
-          <PencilLine />
+        <Button className="w-50 mx-3 my-3 bg-indigo-800 hover:bg-indigo-700">
+          <ArchiveRestore className="mr-2" />
+          Cadastrar Mercadoria
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[500px] md:max-w-[800px]">
-        <DialogHeader>
-          <DialogTitle>
-            Editar dados da Mercadoria Nº:{' '}
-            <span className="text-blue-900 dark:text-blue-600">
-              {merchandise.register_number}
-            </span>
-          </DialogTitle>
-        </DialogHeader>
+        <DialogTitle>Cadastro de Usuário</DialogTitle>
+        <Separator />
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
@@ -167,7 +141,6 @@ export function DialogFormEditMerchandise({ merchandise }: GoodsFormEditProps) {
             </Button>
           </form>
         </Form>
-        <Separator />
       </DialogContent>
     </Dialog>
   )
