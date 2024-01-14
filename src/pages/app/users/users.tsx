@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 
 import { Pagination } from '@/components/pagination'
-import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import {
   Table,
@@ -12,6 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { DialogFormCreateUser } from '@/pages/app/users/form-create-user'
 import { UsersTableRows } from '@/pages/app/users/users-table-rows'
 import { getAllUsers } from '@/requests/users/getAllUsers'
 
@@ -43,12 +43,7 @@ export function Users() {
         <h1 className="text-3xl font-bold tracking-tight">Usuários</h1>
         <div className="space-y-2.5">
           <div className="rounded-md border">
-            <a href="/usuarios/cadastro" className="justify-end">
-              <Button className="w-50 mx-3 my-3 bg-indigo-800 hover:bg-indigo-700">
-                <UserPlus className="mr-2" />
-                Cadastrar Usuário
-              </Button>
-            </a>
+            <DialogFormCreateUser />
             <Separator />
             <Table>
               <TableHeader>

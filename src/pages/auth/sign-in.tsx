@@ -29,7 +29,7 @@ export function SignIn() {
     try {
       const response = await login(data.username, data.password)
 
-      if (response.access_token) {
+      if (response.status === 200) {
         sessionStorage.setItem('username', response.user.username)
         sessionStorage.setItem('userEmail', response.user.email)
         sessionStorage.setItem('userName', response.user.name)
