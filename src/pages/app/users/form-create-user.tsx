@@ -1,15 +1,13 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { CheckCircle, UserPlus } from 'lucide-react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import * as z from 'zod'
 
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
@@ -25,42 +23,35 @@ import {
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import { Switch } from '@/components/ui/switch'
+import { FormUserSchema } from '@/pages/app/users/form-user-schema'
+import { createUser } from '@/requests/users/createUser'
 
-const formSchema = z.object({
-  username: z.string().min(1, {
-    message: 'Este campo é obrigatório.',
-  }),
-  password: z.string().min(1, {
-    message: 'Este campo é obrigatório.',
-  }),
-  name: z.string().min(1, {
-    message: 'Este campo é obrigatório.',
-  }),
-  email: z
-    .string()
-    .email({
-      message: 'Digite um e-mail válido.',
-    })
-    .min(1, {
-      message: 'Este campo é obrigatório.',
-    }),
-  is_admin: z.boolean().default(false),
-  is_active: z.boolean().default(true),
-})
+const formSchema = FormUserSchema
 
 export function DialogFormCreateUser() {
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      username: '',
-    },
+    // defaultValues: {
+    //   username: '',
+    // },
   })
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values)
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      const response = await createUser(
+        values,
+        sessionStorage.getItem('accessToken') as string,
+      )
+      if (response.status === 201) {
+        toast.success(response.msg)
+        setTimeout(() => window.location.reload(), 800)
+      } else {
+        toast.error(response.msg)
+      }
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   return (
