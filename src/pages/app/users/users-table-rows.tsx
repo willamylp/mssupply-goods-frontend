@@ -29,7 +29,7 @@ export function UsersTableRows({ user }: UsersTableRowsProps) {
     try {
       const response = await deleteUser(token, id)
       console.log(response.status)
-      if (response.status === 201) {
+      if (response.status === 204) {
         toast.success(response.msg)
         setTimeout(() => window.location.reload(), 500)
       } else {
