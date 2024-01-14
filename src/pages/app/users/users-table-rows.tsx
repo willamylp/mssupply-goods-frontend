@@ -1,11 +1,4 @@
-import {
-  PencilLine,
-  Trash2,
-  User,
-  UserCheck,
-  UserRoundCog,
-  UserX,
-} from 'lucide-react'
+import { Trash2, User, UserCheck, UserRoundCog, UserX } from 'lucide-react'
 import { toast } from 'sonner'
 
 import {
@@ -21,7 +14,6 @@ import {
 } from '@/components/ui/alert-dialog'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 import { TableCell, TableRow } from '@/components/ui/table'
 import { deleteUser } from '@/requests/users/deleteUser'
 
@@ -39,7 +31,7 @@ export function UsersTableRows({ user }: UsersTableRowsProps) {
       console.log(response.status)
       if (response.status === 201) {
         toast.success(response.msg)
-        setTimeout(() => window.location.reload(), 800)
+        setTimeout(() => window.location.reload(), 500)
       } else {
         toast.error(response.msg)
       }

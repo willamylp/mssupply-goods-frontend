@@ -31,7 +31,7 @@ export function Header() {
 
           {buttonUsers}
 
-          <NavLink to="/orders">
+          <NavLink to="/mercadorias">
             <PackageSearch className="h-4 w-4" />
             Mercadorias
           </NavLink>
