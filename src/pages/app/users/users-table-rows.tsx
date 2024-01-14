@@ -83,7 +83,7 @@ export function UsersTableRows({ user }: UsersTableRowsProps) {
           ) : (
             <UserX className="mr-1" />
           )}{' '}
-          {user.is_admin ? 'Ativo' : 'Inativo'}
+          {user.is_active ? 'Ativo' : 'Inativo'}
         </Badge>
       </TableCell>
       <TableCell>
@@ -118,18 +118,7 @@ export function UsersTableRows({ user }: UsersTableRowsProps) {
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button
-              variant="outline"
-              className="w-50 border-none bg-blue-600 text-white hover:bg-blue-500 hover:text-white"
-            >
-              <PencilLine className="mr-2 h-4 w-4" />
-              <span className="font-semibold">Editar</span>
-            </Button>
-          </DialogTrigger>
-          <DialogFormEditUser user={user} key={user.id} />
-        </Dialog>
+        <DialogFormEditUser user={user} key={user.id} />
       </TableCell>
     </TableRow>
   )

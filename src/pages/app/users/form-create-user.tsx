@@ -29,14 +29,10 @@ import { createUser } from '@/requests/users/createUser'
 const formSchema = FormUserSchema
 
 export function DialogFormCreateUser() {
-  // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    // defaultValues: {
-    //   username: '',
-    // },
   })
-  // 2. Define a submit handler.
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       const response = await createUser(

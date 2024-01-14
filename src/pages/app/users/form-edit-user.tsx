@@ -1,13 +1,16 @@
-import { CheckCircle, Loader2 } from 'lucide-react'
-import { Control, FormProvider, useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { CheckCircle, PencilLine } from 'lucide-react'
+import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import * as z from 'zod'
 
 import { Button } from '@/components/ui/button'
 import {
+  Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from '@/components/ui/dialog'
 import {
   Form,
@@ -19,10 +22,10 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
 import { Switch } from '@/components/ui/switch'
 import { FormUserSchema } from '@/pages/app/users/form-user-schema'
+import { updateUser } from '@/requests/users/updateUser'
 
 import { UserProps } from './users'
 
@@ -30,99 +33,181 @@ interface UsersFormEditProps {
   user: UserProps
 }
 
-type TypeFormUser = z.infer<typeof FormUserSchema>
+const formSchema = FormUserSchema.omit({ password: true }).merge(
+  z.object({ password: z.string().optional() }),
+)
 
 export function DialogFormEditUser({ user }: UsersFormEditProps) {
-  const {
-    register,
-    handleSubmit,
-    formState: { isSubmitting },
-  } = useForm<TypeFormUser>()
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      username: user.username,
+      name: user.name,
+      email: user.email,
+    },
+  })
 
-  async function handleUserEdit(data: TypeFormUser) {
-    return await console.log(data)
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      const response = await updateUser(
+        user.id,
+        values,
+        sessionStorage.getItem('accessToken') as string,
+      )
+      if (response.status === 201) {
+        toast.success(response.msg)
+        setTimeout(() => window.location.reload(), 800)
+      } else {
+        toast.error(response.msg)
+      }
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   return (
-    <DialogContent className="sm:max-w-[425px]">
-      <DialogHeader>
-        <DialogTitle>
-          Editar dados do Usuário:{' '}
-          <span className="text-blue-900 dark:text-blue-600">
-            {user.username}
-          </span>
-        </DialogTitle>
-      </DialogHeader>
-      <Separator />
-
-      <form className="space-y-6" onSubmit={handleSubmit(handleUserEdit)}>
-        <div className="space-y-2">
-          <Label htmlFor="username">Nome de Usuário</Label>
-          <Input
-            id="username"
-            type="text"
-            className="shadow-md ring-1 ring-slate-300"
-            defaultValue={user.username}
-            required={true}
-            {...register('username')}
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="name">Nome</Label>
-          <Input
-            id="name"
-            type="text"
-            className="shadow-md ring-1 ring-slate-300"
-            defaultValue={user.name}
-            required={true}
-            {...register('name')}
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="email">E-mail</Label>
-          <Input
-            id="email"
-            type="email"
-            className="shadow-md ring-1 ring-slate-300"
-            defaultValue={user.email}
-            required={true}
-            {...register('email')}
-          />
-        </div>
-        <div className="space-y-2 text-center">
-          <Label htmlFor="is_admin">Usuário Administrador?</Label>
-          <Input
-            id="is_admin"
-            type="checkbox"
-            className="align-start"
-            defaultChecked={user.is_admin}
-            {...register('is_admin')}
-          />
-        </div>
-        <div className="space-y-2 text-center">
-          <Label htmlFor="is_active">Usuário Ativo?</Label>
-          <Input
-            id="is_active"
-            type="checkbox"
-            className="align-start"
-            defaultChecked={user.is_active}
-            {...register('is_active')}
-          />
-        </div>
-        <Separator className="space-y-5" />
+    <Dialog>
+      <DialogTrigger asChild>
         <Button
-          className="w-full space-y-5 bg-teal-800 text-white hover:bg-teal-700"
-          type="submit"
-          disabled={isSubmitting}
+          variant="outline"
+          className="w-50 border-none bg-blue-600 text-white hover:bg-blue-500 hover:text-white"
         >
-          {isSubmitting ? (
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          ) : (
-            'Salvar Alterações'
-          )}
+          <PencilLine className="mr-2 h-4 w-4" />
+          <span className="font-semibold">Editar</span>
         </Button>
-      </form>
-    </DialogContent>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[500px] md:max-w-[800px]">
+        <DialogHeader>
+          <DialogTitle>
+            Editar dados do Usuário:{' '}
+            <span className="text-blue-900 dark:text-blue-600">
+              {user.username}
+            </span>
+          </DialogTitle>
+        </DialogHeader>
+        <Separator />
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Nome Completo</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Ex.: Willamy Domingos de O. Joventino"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>E-mail</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Ex.: willamy@morningstar.com.br"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="username"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Usuário</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Ex.: willdev" {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    Usuário que será utilizado para fazer login no sistema.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Senha de Acesso</FormLabel>
+                  <FormControl>
+                    <Input type="password" placeholder="*****" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Separator />
+            <FormField
+              control={form.control}
+              name="is_admin"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                  <div className="space-y-0.5">
+                    <FormLabel className="text-base">
+                      Usuário Administrador?
+                    </FormLabel>
+                    <FormDescription>
+                      Indica se o usuário terá acesso a todas as funcionalidades
+                    </FormDescription>
+                  </div>
+                  <FormControl>
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                      defaultChecked={user.is_admin}
+                      aria-readonly
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="is_active"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                  <div className="space-y-0.5">
+                    <FormLabel className="text-base">Usuário Ativo?</FormLabel>
+                    <FormDescription>
+                      Indica se o usuário poderá acessar o sistema.
+                    </FormDescription>
+                  </div>
+                  <FormControl>
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                      defaultChecked={user.is_active}
+                      aria-readonly
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <Separator />
+
+            <Button
+              type="submit"
+              className="w-[200px] items-center justify-center bg-teal-700 hover:bg-teal-600"
+            >
+              <CheckCircle className="mr-2" />
+              REGISTRAR
+            </Button>
+          </form>
+        </Form>
+      </DialogContent>
+    </Dialog>
   )
 }
