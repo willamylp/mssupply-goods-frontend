@@ -15,6 +15,8 @@ import { GoodsEntriesTableRows } from '@/pages/app/goods/entries/goods-entries-t
 import { getAllEntries } from '@/requests/goods/entries/getAllEntries'
 
 export interface GoodsEntriesProps {
+  goods_register_number: ReactNode
+  goods_name: ReactNode
   id: number
   name_merchandise: string
   register_number_merchandise: number

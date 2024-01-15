@@ -10,12 +10,7 @@ export const FormUserSchema = z.object({
   name: z.string({
     required_error: 'Este campo é obrigatório.',
   }),
-  email: z
-    .string()
-    .email({
-      message: 'Digite um e-mail válido.',
-    })
-    .transform((value) => value.split('@')[1]),
-  is_admin: z.boolean().default(false),
-  is_active: z.boolean().default(true),
+  email: z.string().email({
+    message: 'Digite um e-mail válido.',
+  }),
 })

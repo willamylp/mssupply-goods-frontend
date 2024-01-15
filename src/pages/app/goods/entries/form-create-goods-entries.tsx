@@ -100,7 +100,7 @@ export function DialogFormCreateEntryMerchandise() {
                       getOptionValue={(merchandise) => String(merchandise.id)}
                       placeholder="Selecione uma mercadoria"
                       onChange={(merchandise) => setSelected(merchandise.id)}
-                      className="text-slate-950 font-normal"
+                      className="font-normal text-slate-950"
                     />
                   </FormControl>
                   <FormMessage />

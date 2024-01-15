@@ -35,7 +35,6 @@ export function Users() {
     }
     loadUsers()
   }, [])
-
   return (
     <>
       <Helmet title="Usuários" />
@@ -58,9 +57,11 @@ export function Users() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {users.map((user) => (
-                  <UsersTableRows user={user} key={user.id} />
-                ))}
+                {users &&
+                  users.length &&
+                  users.map((user) => (
+                    <UsersTableRows user={user} key={user.id} />
+                  ))}
               </TableBody>
             </Table>
           </div>
