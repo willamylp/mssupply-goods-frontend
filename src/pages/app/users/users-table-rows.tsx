@@ -85,7 +85,7 @@ export function UsersTableRows({ user }: UsersTableRowsProps) {
               variant="destructive"
               className="w-50 mr-2 bg-rose-700 text-white hover:bg-rose-600 hover:text-white"
             >
-              <Trash2 className="mr-2 h-4 w-4" /> Deletar
+              <Trash2 />
             </Button>
           </AlertDialogTrigger>
           <AlertDialogContent>

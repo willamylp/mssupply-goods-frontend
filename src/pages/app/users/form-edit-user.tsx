@@ -72,8 +72,7 @@ export function DialogFormEditUser({ user }: UsersFormEditProps) {
           variant="outline"
           className="w-50 border-none bg-blue-600 text-white hover:bg-blue-500 hover:text-white"
         >
-          <PencilLine className="mr-2 h-4 w-4" />
-          <span className="font-semibold">Editar</span>
+          <PencilLine />
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[500px] md:max-w-[800px]">
