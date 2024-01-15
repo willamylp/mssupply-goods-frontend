@@ -48,7 +48,7 @@ export function GoodsEntriesTableRows({ entry }: EntriesTableRowsProps) {
     <TableRow>
       <TableCell className="font-medium">{entry.id}</TableCell>
       <TableCell className="font-medium">
-        {entry.register_number_merchandise} | {entry.name_merchandise}
+        {entry.goods_register_number} | {entry.goods_name}
       </TableCell>
       <TableCell className="font-medium">{entry.quantity}</TableCell>
       <TableCell className="font-medium">{formattedDateTimeDate}</TableCell>

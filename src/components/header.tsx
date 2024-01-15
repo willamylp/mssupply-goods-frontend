@@ -29,7 +29,7 @@ export function Header() {
   const buttonUsers =
     userIsAdmin === '1' ? (
       <NavLink to="/usuarios">
-        <Button variant={'outline'} className="text-slate-950">
+        <Button variant={'outline'} className="text-slate-950 dark:text-white">
           <Users className="mr-2 h-4 w-4" />
           Usuários
         </Button>
@@ -45,8 +45,11 @@ export function Header() {
 
         <nav className="flex items-center space-x-4 lg:space-x-6 ">
           <NavLink to="/">
-            <Button variant={'outline'} className="text-slate-950">
-              <Home className="mr-2 h-4 w-4 text-slate-950" /> Início
+            <Button
+              variant={'outline'}
+              className="text-slate-950 dark:text-white"
+            >
+              <Home className="mr-2 h-4 w-4" /> Início
             </Button>
           </NavLink>
 

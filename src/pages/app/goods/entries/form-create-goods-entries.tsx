@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { format } from 'date-fns'
 import { CheckCircle, PackagePlus } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -27,8 +28,6 @@ import { FormGoodsEntriesSchema } from '@/pages/app/goods/entries/form-goods-ent
 import { createEntry } from '@/requests/goods/entries/createEntry'
 import { getAllGoods } from '@/requests/goods/getAllGoods'
 
-import { SelectMerchandise } from './select-goods'
-
 const formSchema = FormGoodsEntriesSchema
 export interface GoodsSelectProps {
   id: number
@@ -40,6 +39,7 @@ export function DialogFormCreateEntryMerchandise() {
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    values.date = String(format(new Date(values.date), 'yyyy-MM-dd HH:mm:ss'))
     try {
       const response = await createEntry(
         values,
@@ -100,6 +100,7 @@ export function DialogFormCreateEntryMerchandise() {
                       getOptionValue={(merchandise) => String(merchandise.id)}
                       placeholder="Selecione uma mercadoria"
                       onChange={(merchandise) => setSelected(merchandise.id)}
+                      className="text-slate-950 font-normal"
                     />
                   </FormControl>
                   <FormMessage />
