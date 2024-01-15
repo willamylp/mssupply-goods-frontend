@@ -12,12 +12,12 @@ import {
 } from '@/components/ui/table'
 import { DialogFormCreateEntryMerchandise } from '@/pages/app/goods/entries/form-create-goods-entries'
 import { GoodsEntriesTableRows } from '@/pages/app/goods/entries/goods-entries-table-rows'
-import { ComboboxForm } from '@/pages/app/goods/entries/select-goods'
 import { getAllEntries } from '@/requests/goods/entries/getAllEntries'
 
 export interface GoodsEntriesProps {
   id: number
   name_merchandise: string
+  register_number_merchandise: number
   quantity: number
   date: string
   location: string
@@ -70,7 +70,6 @@ export function GoodsEntries() {
           <Pagination pageIndex={0} totalCount={entries.length} perPage={10} />
         </div>
       </div>
-      <ComboboxForm />
     </>
   )
 }

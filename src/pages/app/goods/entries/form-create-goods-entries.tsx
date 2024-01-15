@@ -2,6 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { CheckCircle, PackagePlus } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import Select from 'react-select'
 import { toast } from 'sonner'
 import * as z from 'zod'
 
@@ -23,10 +24,16 @@ import {
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import { FormGoodsEntriesSchema } from '@/pages/app/goods/entries/form-goods-entries-schema'
-import { createMerchandise } from '@/requests/goods/createMerchandise'
+import { createEntry } from '@/requests/goods/entries/createEntry'
+import { getAllGoods } from '@/requests/goods/getAllGoods'
+
+import { SelectMerchandise } from './select-goods'
 
 const formSchema = FormGoodsEntriesSchema
-
+export interface GoodsSelectProps {
+  id: number
+  name: string
+}
 export function DialogFormCreateEntryMerchandise() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -34,7 +41,7 @@ export function DialogFormCreateEntryMerchandise() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      const response = await createMerchandise(
+      const response = await createEntry(
         values,
         sessionStorage.getItem('accessToken') as string,
       )
@@ -49,6 +56,22 @@ export function DialogFormCreateEntryMerchandise() {
     }
   }
 
+  const [goods, setGoods] = useState<GoodsSelectProps[]>([])
+  const [selected, setSelected] = useState()
+
+  useEffect(() => {
+    async function loadGoods() {
+      setGoods(
+        await getAllGoods(sessionStorage.getItem('accessToken') as string),
+      )
+    }
+    loadGoods()
+  }, [])
+
+  if (selected) {
+    form.setValue('goods_id', String(selected))
+  }
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -61,7 +84,28 @@ export function DialogFormCreateEntryMerchandise() {
         <DialogTitle>Registro de Entrada</DialogTitle>
         <Separator />
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="w-full space-y-8"
+          >
+            <FormField
+              name="goods_id"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <FormLabel>Mercadoria</FormLabel>
+                  <FormControl>
+                    <Select
+                      options={goods}
+                      getOptionLabel={(merchandise) => merchandise.name}
+                      getOptionValue={(merchandise) => String(merchandise.id)}
+                      placeholder="Selecione uma mercadoria"
+                      onChange={(merchandise) => setSelected(merchandise.id)}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="quantity"
@@ -106,12 +150,6 @@ export function DialogFormCreateEntryMerchandise() {
               )}
             />
             <Separator />
-            {/* {goods.map((merchandise) => (
-              <DialogFormCreateEntryMerchandise
-                merchandise={merchandise}
-                key={merchandise.id}
-              />
-            ))} */}
             <Button
               type="submit"
               className="w-[200px] items-center justify-center bg-teal-700 hover:bg-teal-600"

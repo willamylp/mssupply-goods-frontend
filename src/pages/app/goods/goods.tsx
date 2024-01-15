@@ -36,7 +36,7 @@ export function Goods() {
     }
     loadGoods()
   }, [])
-  console.log(goods)
+
   return (
     <>
       <Helmet title="Mercadorias" />

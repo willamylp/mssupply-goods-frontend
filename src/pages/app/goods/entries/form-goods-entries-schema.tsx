@@ -1,11 +1,5 @@
 import { z } from 'zod'
 
-const goodsSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  register_number: z.string(),
-});
-
 export const FormGoodsEntriesSchema = z.object({
   quantity: z.coerce
     .number({
@@ -20,5 +14,7 @@ export const FormGoodsEntriesSchema = z.object({
     required_error: 'Este campo é obrigatório.',
     invalid_type_error: 'Informe uma data válida.',
   }),
-  goods: z.array(goodsSchema),
+  goods_id: z.string({
+    required_error: 'Este campo é obrigatório.',
+  }),
 })
