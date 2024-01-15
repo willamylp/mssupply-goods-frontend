@@ -47,10 +47,10 @@ export function DialogFormEditEntryMerchandise({
       goods_id: String(entry.goods_id),
       quantity: entry.quantity,
       location: entry.location,
-      date: new Date(format(entry.date, 'yyyy-MM-ddThh:mm')),
+      date: format(entry.date, 'yyyy-MM-ddThh:mm'),
     },
   })
-  console.log(format(entry.date, 'yyyy-MM-ddThh:mm'))
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     values.date = format(new Date(values.date), 'yyyy-MM-dd HH:mm:ss')
     try {

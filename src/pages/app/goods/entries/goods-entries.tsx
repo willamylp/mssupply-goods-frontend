@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 
 import { Pagination } from '@/components/pagination'
@@ -31,15 +31,16 @@ export interface GoodsEntriesProps {
 export function GoodsEntries() {
   const [entries, setEntries] = useState<GoodsEntriesProps[]>([])
 
-  useEffect(() => {
-    async function loadGoodsEntries() {
-      setEntries(
-        await getAllEntries(sessionStorage.getItem('accessToken') as string),
-      )
-    }
-    loadGoodsEntries()
+  const loadGoodsEntries = useCallback(async () => {
+    setEntries(
+      await getAllEntries(sessionStorage.getItem('accessToken') as string),
+    )
   }, [])
-  console.log(entries.length)
+
+  useEffect(() => {
+    loadGoodsEntries()
+  }, [loadGoodsEntries])
+
   return (
     <>
       <Helmet title="Entradas de Mercadorias" />
@@ -49,7 +50,7 @@ export function GoodsEntries() {
         </h1>
         <div className="space-y-2.5">
           <div className="rounded-md border">
-            <DialogFormCreateEntryMerchandise />
+            <DialogFormCreateEntryMerchandise callback={loadGoodsEntries}/>
             <Separator />
             <Table>
               <TableHeader>
@@ -71,7 +72,7 @@ export function GoodsEntries() {
               </TableBody>
             </Table>
           </div>
-          <Pagination pageIndex={0} totalCount={entries.length} perPage={10} />
+          <Pagination pageIndex={0} totalCount={entries?.length} perPage={10} />
         </div>
       </div>
     </>

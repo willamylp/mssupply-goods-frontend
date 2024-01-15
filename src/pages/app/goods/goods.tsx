@@ -71,11 +71,7 @@ export function Goods() {
               </TableBody>
             </Table>
           </div>
-          <Pagination
-            pageIndex={0}
-            totalCount={goods.length}
-            perPage={10}
-          />
+          <Pagination pageIndex={0} totalCount={goods.length} perPage={10} />
         </div>
       </div>
     </>

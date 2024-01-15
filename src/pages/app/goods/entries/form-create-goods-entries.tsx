@@ -33,13 +33,17 @@ export interface GoodsSelectProps {
   id: number
   name: string
 }
-export function DialogFormCreateEntryMerchandise() {
+export function DialogFormCreateEntryMerchandise({
+  callback,
+}: {
+  callback: () => void
+}) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    values.date = new Date(format(new Date(values.date), 'yyyy-MM-dd HH:mm:ss'))
+    values.date = format(new Date(values.date), 'yyyy-MM-dd HH:mm:ss')
     try {
       const response = await createEntry(
         values,
@@ -47,7 +51,11 @@ export function DialogFormCreateEntryMerchandise() {
       )
       if (response.status === 200) {
         toast.success(response.msg)
-        setTimeout(() => window.location.reload(), 800)
+        callback()
+        setSelected(undefined)
+        form.setValue('quantity', '')
+        form.setValue('location', '')
+        form.setValue('date', '')
       } else {
         toast.error(response.msg)
       }
