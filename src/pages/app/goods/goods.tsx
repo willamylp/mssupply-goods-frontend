@@ -61,16 +61,21 @@ export function Goods() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {goods.map((merchandise) => (
-                  <GoodsTableRows
-                    merchandise={merchandise}
-                    key={merchandise.id}
-                  />
-                ))}
+                {goods &&
+                  goods.map((merchandise) => (
+                    <GoodsTableRows
+                      merchandise={merchandise}
+                      key={merchandise.id}
+                    />
+                  ))}
               </TableBody>
             </Table>
           </div>
-          <Pagination pageIndex={0} totalCount={goods.length} perPage={10} />
+          <Pagination
+            pageIndex={0}
+            totalCount={goods.length}
+            perPage={10}
+          />
         </div>
       </div>
     </>

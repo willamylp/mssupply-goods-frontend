@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { format } from 'date-fns'
-import { CheckCircle, PackagePlus } from 'lucide-react'
+import { format, parse } from 'date-fns'
+import { CheckCircle, PencilLine } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import Select from 'react-select'
@@ -25,23 +25,37 @@ import {
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import { FormGoodsEntriesSchema } from '@/pages/app/goods/entries/form-goods-entries-schema'
-import { createEntry } from '@/requests/goods/entries/createEntry'
+import { updateEntry } from '@/requests/goods/entries/updateEntry'
 import { getAllGoods } from '@/requests/goods/getAllGoods'
 
+import { GoodsEntriesProps } from './goods-entries'
+
 const formSchema = FormGoodsEntriesSchema
+interface EntriesTableRowsProps {
+  entry: GoodsEntriesProps
+}
 export interface GoodsSelectProps {
   id: number
   name: string
 }
-export function DialogFormCreateEntryMerchandise() {
+export function DialogFormEditEntryMerchandise({
+  entry,
+}: EntriesTableRowsProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      goods_id: String(entry.goods_id),
+      quantity: entry.quantity,
+      location: entry.location,
+      date: new Date(format(entry.date, 'yyyy-MM-ddThh:mm')),
+    },
   })
-
+  console.log(format(entry.date, 'yyyy-MM-ddThh:mm'))
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    values.date = new Date(format(new Date(values.date), 'yyyy-MM-dd HH:mm:ss'))
+    values.date = format(new Date(values.date), 'yyyy-MM-dd HH:mm:ss')
     try {
-      const response = await createEntry(
+      const response = await updateEntry(
+        entry.id,
         values,
         sessionStorage.getItem('accessToken') as string,
       )
@@ -75,9 +89,11 @@ export function DialogFormCreateEntryMerchandise() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="w-50 mx-3 my-3 bg-indigo-800 hover:bg-indigo-700">
-          <PackagePlus className="mr-2" />
-          Registrar Entrada de Mercadoria
+        <Button
+          variant="outline"
+          className="border-none bg-blue-600 text-white hover:bg-blue-500 hover:text-white"
+        >
+          <PencilLine />
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[500px] md:max-w-[800px]">
@@ -101,6 +117,9 @@ export function DialogFormCreateEntryMerchandise() {
                       placeholder="Selecione uma mercadoria"
                       onChange={(merchandise) => setSelected(merchandise.id)}
                       className="font-normal text-slate-950"
+                      defaultInputValue={entry.goods_name}
+                      defaultValue={entry.goods_id}
+                      defaultMenuIsOpen={true}
                     />
                   </FormControl>
                   <FormMessage />
@@ -118,6 +137,7 @@ export function DialogFormCreateEntryMerchandise() {
                       placeholder="Somente números"
                       {...field}
                       type="number"
+                      defaultValue={entry.quantity}
                     />
                   </FormControl>
                   <FormMessage />
@@ -131,7 +151,11 @@ export function DialogFormCreateEntryMerchandise() {
                 <FormItem>
                   <FormLabel>Local de Entrada</FormLabel>
                   <FormControl>
-                    <Input placeholder="Ex.: Filial do RJ" {...field} />
+                    <Input
+                      placeholder="Ex.: Filial do RJ"
+                      {...field}
+                      defaultValue={entry.location}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -144,7 +168,11 @@ export function DialogFormCreateEntryMerchandise() {
                 <FormItem>
                   <FormLabel>Data de Entrada</FormLabel>
                   <FormControl>
-                    <Input {...field} type="datetime-local" />
+                    <Input
+                      {...field}
+                      type="datetime-local"
+                      defaultValue={format(entry.date, 'yyyy-MM-ddThh:mm:ss')}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

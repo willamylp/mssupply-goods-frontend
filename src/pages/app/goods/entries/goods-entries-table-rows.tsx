@@ -17,7 +17,7 @@ import { Button } from '@/components/ui/button'
 import { TableCell, TableRow } from '@/components/ui/table'
 import { deleteEntry } from '@/requests/goods/entries/deleteEntry'
 
-// import { DialogFormEditMerchandise } from './form-edit-merchandise'
+import { DialogFormEditEntryMerchandise } from './form-edit-entry-merchandise'
 import { GoodsEntriesProps } from './goods-entries'
 
 interface EntriesTableRowsProps {
@@ -53,7 +53,7 @@ export function GoodsEntriesTableRows({ entry }: EntriesTableRowsProps) {
       <TableCell className="font-medium">{entry.quantity}</TableCell>
       <TableCell className="font-medium">{formattedDateTimeDate}</TableCell>
       <TableCell className="font-medium">{entry.location}</TableCell>
-      <TableCell className="font-medium">{entry.name_user_added}</TableCell>
+      <TableCell className="font-medium">{entry.user_username}</TableCell>
       <TableCell>
         <AlertDialog>
           <AlertDialogTrigger asChild>
@@ -90,6 +90,7 @@ export function GoodsEntriesTableRows({ entry }: EntriesTableRowsProps) {
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
+        <DialogFormEditEntryMerchandise entry={entry} key={entry.id} />
       </TableCell>
     </TableRow>
   )

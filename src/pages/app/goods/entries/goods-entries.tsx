@@ -15,8 +15,6 @@ import { GoodsEntriesTableRows } from '@/pages/app/goods/entries/goods-entries-t
 import { getAllEntries } from '@/requests/goods/entries/getAllEntries'
 
 export interface GoodsEntriesProps {
-  goods_register_number: ReactNode
-  goods_name: ReactNode
   id: number
   name_merchandise: string
   register_number_merchandise: number
@@ -25,6 +23,9 @@ export interface GoodsEntriesProps {
   location: string
   name_user_added: string
   goods_id: number
+  goods_register_number: string
+  goods_name: string
+  user_username: string
 }
 
 export function GoodsEntries() {
@@ -38,7 +39,7 @@ export function GoodsEntries() {
     }
     loadGoodsEntries()
   }, [])
-
+  console.log(entries.length)
   return (
     <>
       <Helmet title="Entradas de Mercadorias" />
@@ -63,9 +64,10 @@ export function GoodsEntries() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {entries.map((entry) => (
-                  <GoodsEntriesTableRows entry={entry} key={entry.id} />
-                ))}
+                {entries &&
+                  entries.map((entry) => (
+                    <GoodsEntriesTableRows entry={entry} key={entry.id} />
+                  ))}
               </TableBody>
             </Table>
           </div>
