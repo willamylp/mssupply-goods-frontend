@@ -1,7 +1,11 @@
+import jsPDF from 'jspdf'
+import autoTable from 'jspdf-autotable'
+import { FileDown } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 
 import { Pagination } from '@/components/pagination'
+import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import {
   Table,
@@ -31,6 +35,7 @@ export interface GoodsEntriesProps {
 export function GoodsEntries() {
   const [entries, setEntries] = useState<GoodsEntriesProps[]>([])
 
+
   const loadGoodsEntries = useCallback(async () => {
     setEntries(
       await getAllEntries(sessionStorage.getItem('accessToken') as string),
@@ -41,6 +46,15 @@ export function GoodsEntries() {
     loadGoodsEntries()
   }, [loadGoodsEntries])
 
+  const downloadData = () => {
+    // eslint-disable-next-line new-cap
+    const pdf = new jsPDF('landscape', 'px', 'a4')
+    autoTable(pdf, {
+      html: '#table-entries',
+    })
+    pdf.save('Lista-Entrada-Mercadorias__MSSupplyChain.pdf')
+  }
+
   return (
     <>
       <Helmet title="Entradas de Mercadorias" />
@@ -50,9 +64,13 @@ export function GoodsEntries() {
         </h1>
         <div className="space-y-2.5">
           <div className="rounded-md border">
-            <DialogFormCreateEntryMerchandise callback={loadGoodsEntries}/>
+            <DialogFormCreateEntryMerchandise callback={loadGoodsEntries} />
+            <Button variant="outline" onClick={downloadData}>
+              <FileDown className="mr-2" />
+              Exportar Relatóro
+            </Button>
             <Separator />
-            <Table>
+            <Table id="table-entries">
               <TableHeader>
                 <TableRow>
                   <TableHead>ID</TableHead>

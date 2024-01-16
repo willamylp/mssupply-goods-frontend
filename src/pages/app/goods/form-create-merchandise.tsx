@@ -27,7 +27,11 @@ import { createMerchandise } from '@/requests/goods/createMerchandise'
 
 const formSchema = FormGoodsSchema
 
-export function DialogFormCreateMerchandise() {
+export function DialogFormCreateMerchandise({
+  callback,
+}: {
+  callback: () => void
+}) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   })
@@ -40,7 +44,12 @@ export function DialogFormCreateMerchandise() {
       )
       if (response.status === 200) {
         toast.success(response.msg)
-        setTimeout(() => window.location.reload(), 800)
+        callback()
+        form.setValue('name', '')
+        form.setValue('register_number', '')
+        form.setValue('manufacturer', '')
+        form.setValue('type', '')
+        form.setValue('description', '')
       } else {
         toast.error(response.msg)
       }

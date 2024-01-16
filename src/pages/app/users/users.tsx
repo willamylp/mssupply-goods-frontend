@@ -1,8 +1,11 @@
-import { UserPlus } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import jsPDF from 'jspdf'
+import autoTable from 'jspdf-autotable'
+import { FileDown, UserPlus } from 'lucide-react'
+import { useCallback, useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 
 import { Pagination } from '@/components/pagination'
+import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import {
   Table,
@@ -27,14 +30,23 @@ export interface UserProps {
 export function Users() {
   const [users, setUsers] = useState<UserProps[]>([])
 
-  useEffect(() => {
-    async function loadUsers() {
-      setUsers(
-        await getAllUsers(sessionStorage.getItem('accessToken') as string),
-      )
-    }
-    loadUsers()
+  const loadUsers = useCallback(async () => {
+    setUsers(await getAllUsers(sessionStorage.getItem('accessToken') as string))
   }, [])
+
+  useEffect(() => {
+    loadUsers()
+  }, [loadUsers])
+
+  const downloadData = () => {
+    // eslint-disable-next-line new-cap
+    const pdf = new jsPDF('landscape', 'px', 'a4')
+    autoTable(pdf, {
+      html: '#table-users',
+    })
+    pdf.save('Lista-Usuarios__MSSupplyChain.pdf')
+  }
+
   return (
     <>
       <Helmet title="Usuários" />
@@ -42,9 +54,13 @@ export function Users() {
         <h1 className="text-3xl font-bold tracking-tight">Usuários</h1>
         <div className="space-y-2.5">
           <div className="rounded-md border">
-            <DialogFormCreateUser />
+            <DialogFormCreateUser callback={loadUsers} />
+            <Button variant="outline" onClick={downloadData}>
+              <FileDown className="mr-2" />
+              Exportar Relatóro
+            </Button>
             <Separator />
-            <Table>
+            <Table id="table-users">
               <TableHeader>
                 <TableRow>
                   <TableHead>ID</TableHead>

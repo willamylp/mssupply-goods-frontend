@@ -1,7 +1,11 @@
-import { useEffect, useState } from 'react'
+import jsPDF from 'jspdf'
+import autoTable from 'jspdf-autotable'
+import { FileDown } from 'lucide-react'
+import { useCallback, useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 
 import { Pagination } from '@/components/pagination'
+import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import {
   Table,
@@ -28,14 +32,22 @@ export interface GoodsProps {
 export function Goods() {
   const [goods, setGoods] = useState<GoodsProps[]>([])
 
-  useEffect(() => {
-    async function loadGoods() {
-      setGoods(
-        await getAllGoods(sessionStorage.getItem('accessToken') as string),
-      )
-    }
-    loadGoods()
+  const loadGoods = useCallback(async () => {
+    setGoods(await getAllGoods(sessionStorage.getItem('accessToken') as string))
   }, [])
+
+  useEffect(() => {
+    loadGoods()
+  }, [loadGoods])
+
+  const downloadData = () => {
+    // eslint-disable-next-line new-cap
+    const pdf = new jsPDF('landscape', 'px', 'a4')
+    autoTable(pdf, {
+      html: '#table-goods',
+    })
+    pdf.save('Lista-Mercadorias__MSSupplyChain.pdf')
+  }
 
   return (
     <>
@@ -44,9 +56,13 @@ export function Goods() {
         <h1 className="text-3xl font-bold tracking-tight">Mercadorias</h1>
         <div className="space-y-2.5">
           <div className="rounded-md border">
-            <DialogFormCreateMerchandise />
+            <DialogFormCreateMerchandise callback={loadGoods} />
+            <Button variant="outline" onClick={downloadData}>
+              <FileDown className="mr-2" />
+              Exportar Relatóro
+            </Button>
             <Separator />
-            <Table>
+            <Table id="table-goods">
               <TableHeader>
                 <TableRow>
                   <TableHead>ID</TableHead>

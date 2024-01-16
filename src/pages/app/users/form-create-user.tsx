@@ -28,7 +28,7 @@ import { createUser } from '@/requests/users/createUser'
 
 const formSchema = FormUserSchema
 
-export function DialogFormCreateUser() {
+export function DialogFormCreateUser({ callback }: { callback: () => void }) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   })
@@ -41,7 +41,12 @@ export function DialogFormCreateUser() {
       )
       if (response.status === 201) {
         toast.success(response.msg)
-        setTimeout(() => window.location.reload(), 800)
+        callback()
+        form.setValue('name', '')
+        form.setValue('email', '')
+        form.setValue('username', '')
+        form.setValue('password', '')
+        form.setValue('is_admin', false)
       } else {
         toast.error(response.msg)
       }
