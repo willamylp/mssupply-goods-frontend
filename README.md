@@ -61,6 +61,10 @@ export default apiConfig
 
 ![App Screenshot](https://i.imgur.com/fIj3Jfc.png)
 
+* Página Inicial (Dashboards)
+
+![App Screenshot](https://i.imgur.com/CBUSs82.png)
+
 * Gestão de Usuários
 
 ![App Screenshot](https://i.imgur.com/ic39lhC.png)
