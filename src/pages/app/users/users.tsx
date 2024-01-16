@@ -81,7 +81,7 @@ export function Users() {
               </TableBody>
             </Table>
           </div>
-          <Pagination pageIndex={0} totalCount={users.length} perPage={10} />
+          <Pagination pageIndex={0} totalCount={users?.length} perPage={10} />
         </div>
       </div>
     </>

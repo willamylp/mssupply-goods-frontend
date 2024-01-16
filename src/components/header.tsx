@@ -87,7 +87,7 @@ export function Header() {
               <DropdownMenuSeparator />
               <DropdownMenuItem>
                 <Button variant={'outline'} className="w-full">
-                  <NavLink to="/saidas">
+                  <NavLink to="/mercadorias/saidas">
                     <PackageOpen className="mr-2 h-4 w-4" />
                     Saídas
                   </NavLink>
