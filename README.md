@@ -3,9 +3,9 @@
 
 ## Stack utilizada
 
-**Front-end:** React, Redux, TailwindCSS, Shadcn/Ui
+**Front-end:** React, TailwindCSS, Shadcn/Ui
 
-**Back-end:** API Python Flask, MySQL
+**Back-end:** API Python Flask, MySQL, Docker
 
 ## Relacionados
 
@@ -41,7 +41,7 @@ Inicie o servidor
 ```
 ## Arquivo requests/apiConfig.ts 
 
-Ajuste as configurações de 'domain' e 'port' arquivo com as configurações de execução da sua API.
+Ajuste as configurações de **domain** e **port** arquivo com as configurações de execução da sua API.
 
 ```javascript
 const domain = 'localhost'
