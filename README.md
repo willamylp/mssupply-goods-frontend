@@ -1,11 +1,19 @@
 
 # Front-end - Sistema de Gestão de Mercadorias da MStarSupply
 
+## Stack utilizada
+
+**Front-end:** React, Redux, TailwindCSS, Shadcn/Ui
+
+**Back-end:** API Python Flask, MySQL
+
 ## Relacionados
 
-Requisito para execução deste sistema
+Requisito para execução deste sistema:
 
 [Integração com API](https://github.com/willamylp/mssupply-goods-frontend.git)
+
+
 ## Rodando localmente
 
 Clone o projeto
