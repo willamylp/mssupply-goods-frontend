@@ -11,7 +11,7 @@
 
 Requisito para execução deste sistema:
 
-[Integração com API](https://github.com/willamylp/mssupply-goods-frontend.git)
+[Integração com API](https://github.com/willamylp/mssupply-goods-api.git)
 
 
 ## Rodando localmente
